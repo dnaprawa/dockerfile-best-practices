@@ -10,6 +10,7 @@ This is all guidance, not a mandate - there may sometimes be reasons to not do w
 The following are included in the Dockerfile in this repository:
 
 - [Use official Docker images whenever possible](#use-official-docker-images-whenever-possible)
+- [Alpine is not always the best choice](#alpine-is-not-always-the-best-choice)
 - [Limit image layers amount](#limit-image-layers-amount)
 - [Run as a non-root user](#run-as-a-non-root-user)
 - [Do not use a UID below 10,000](#do-not-use-a-uid-below-10-000)
@@ -17,7 +18,6 @@ The following are included in the Dockerfile in this repository:
 - [The `latest` is an evil, choose specific image tag](#the-latest-is-an-evil-choose-specific-image-tag)
 - [Only store arguments in `CMD`](#only-store-arguments-in-cmd)
 - [Always use COPY instead of ADD (there is only one exception)](#always-use-copy-instead-of-add-there-is-only-one-exception)
-- [Alpine is not always the best choice](#alpine-is-not-always-the-best-choice)
 
 ## Use official Docker images whenever possible
 
@@ -43,6 +43,14 @@ Use official Docker Image for dotnet
 ```Dockerfile
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster
 ```
+
+## Alpine is not always the best choice
+
+Even Alpine is lightweight, there are some known issues with performance for some technologies (https://pythonspeed.com/articles/alpine-docker-python/)
+Second thing about  Alpine-based images - security. Most of vulnerabilities scanners does not find any vulnerabilties in Alpine-based images. If scanner didn't find any vulnerability, does it mean it's 100% secure? Of course not. 
+
+Before making decision, evaluate what are benefits of alpine. 
+
 
 ## Limit image layers amount
 
@@ -138,12 +146,7 @@ If `CMD` includes the binary name, then they must guess what your binary name is
 
 // TO DO
 
-## Alpine is not always the best choice
 
-Even Alpine is lightweight, there are some known issues with performance for some technologies (https://pythonspeed.com/articles/alpine-docker-python/)
-Second thing about  Alpine-based images - security. Most of vulnerabilities scanners does not find any vulnerabilties in Alpine-based images. If scanner didn't find any vulnerability, does it mean it's 100% secure? Of course not. 
-
-Before making decision, evaluate what are benefits of alpine. 
 
 
 
