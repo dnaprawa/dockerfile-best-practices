@@ -123,13 +123,13 @@ ENTRYPOINT ["/sbin/tini", "--", "myapp"]
 And `CMD` be only arguments for your command:
 
 ```Dockerfile
-CMD ["--foo", "1", "--bar=2"]
+CMD ["--foo", "5", "--bar=10"]
 ```
 
 It allows people to ergonomically pass arguments to your binary without having to guess its name, e.g. they can write:
 
 ```sh
-docker run yourimage --help
+docker run IMAGE --some-argument
 ```
 
 If `CMD` includes the binary name, then they must guess what your binary name is in order to pass arguments etc.
