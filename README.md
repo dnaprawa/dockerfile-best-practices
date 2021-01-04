@@ -2,7 +2,7 @@
 
 Writing production-ready Dockerfiles is not as simple as you could think about it. 
 
-This repository contains some best-practices for writing Dockerfiles. Most of them are coming from my experience while working with Docker & Kubernetes. 
+This repository contains some best-practices for writing Dockerfiles. Most of them are coming from [my experience](https://twitter.com/DamianNaprawa) while working with Docker & Kubernetes. 
 This is all guidance, not a mandate - there may sometimes be reasons to not do what is described here, but if you _don't know_ then this is probably what you should be doing.
 
 ## Best practices included in the Dockerfile
