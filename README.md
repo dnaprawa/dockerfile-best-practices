@@ -10,13 +10,14 @@ This is all guidance, not a mandate - there may sometimes be reasons to not do w
 The following are included in the Dockerfile in this repository:
 
 - [Use official Docker images whenever possible](#use-official-docker-images-whenever-possible)
-- [Limit image layers amount]#(limit-image-layers-amount)
+- [Limit image layers amount](#limit-image-layers-amount)
 - [Run as a non-root user](#run-as-a-non-root-user)
 - [Do not use a UID below 10,000](#do-not-use-a-uid-below-10-000)
 - [Use a static UID and GID](#use-a-static-uid-and-gid)
 - [The `latest` is an evil, choose specific image tag](#the-latest-is-an-evil-choose-specific-image-tag)
 - [Only store arguments in `CMD`](#only-store-arguments-in-cmd)
 - [Always use COPY instead of ADD (there is only one exception)](#always-use-copy-instead-of-add-there-is-only-one-exception)
+- [Alpine is not always the best choice](#alpine-is-not-always-the-best-choice)
 
 ## Use official Docker images whenever possible
 
@@ -69,7 +70,26 @@ RUN curl -SL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-lin
 
 ## Run as a non-root user
 
-Running containers as a non-root user substantially decreases the risk that container -> host privilege escalation could occur. This is an added security benefit. ([Docker docs](https://docs.docker.com/engine/security/#linux-kernel-capabilities). For Polish PPL 
+Running containers as a non-root user substantially decreases the risk that container -> host privilege escalation could occur. 
+This is an added security benefit ([Docker docs](https://docs.docker.com/engine/security/#linux-kernel-capabilities).
+
+For debian-based images, removing root from container could be like this:
+
+```Dockerfile
+RUN groupadd -g 10001 dotnet && \
+   useradd -u 10000 -g dotnet dotnet \
+   && chown -R dotnet:dotnet /app
+
+USER dotnet:dotnet
+```
+
+**NOTE**: Sometimes when you remove the root from container, you will need to adjust your application/service permissions.
+
+For example, dotnet application cannot run on port 80 without root priviligies and you have to change the default port (in the example it's 5000).
+
+```Dockerfile
+ENV ASPNETCORE_URLS http://*:5000
+```
 
 ## Do not use a UID below 10,000
 
