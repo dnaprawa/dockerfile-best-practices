@@ -21,7 +21,7 @@ The following are included in the Dockerfile in this repository:
 
 ## Use official Docker images whenever possible
 
-Using official Docker images dedicated for your technology should be the first choice. Why? Because those images are optimizied and tested by MILIONS of users. 
+Using official Docker images dedicated for your technology should be the first choice. Why? Because those images are optimized and tested by MILLIONS of users. 
 Creating your image from scratch is a good idea when official base image contains vulnerabilities or you cannot find a base image dedicated for your technology.
 
 Instead of installing SDK manually:
@@ -46,15 +46,16 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster
 
 ## Alpine is not always the best choice
 
-Even Alpine is lightweight, there are some known issues with performance for some technologies (https://pythonspeed.com/articles/alpine-docker-python/)
-Second thing about  Alpine-based images - security. Most of vulnerabilities scanners does not find any vulnerabilties in Alpine-based images. If scanner didn't find any vulnerability, does it mean it's 100% secure? Of course not. 
+Even though Alpine is lightweight, there are some known issues with performance for some technologies (https://pythonspeed.com/articles/alpine-docker-python/).
 
-Before making decision, evaluate what are benefits of alpine. 
+Second thing about  Alpine-based images - security. Most of vulnerabilities scanners do not find any vulnerabilities in Alpine-based images. If scanner didn't find any vulnerability, does it mean it's 100% secure? Of course not. 
+
+Before making a decision, evaluate what are benefits of alpine. 
 
 
 ## Limit image layers amount
 
-Each `RUN` instruction in your Dockerfile will end up with creating additional layer for your final image. The best practices is to limit the amount of layers to keep image lightweight.
+Each `RUN` instruction in your Dockerfile will end up creating an additional layer in your final image. The best practice is to limit the amount of layers to keep the image lightweight.
 
 Instead of:
 
@@ -79,9 +80,9 @@ RUN curl -SL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-lin
 ## Run as a non-root user
 
 Running containers as a non-root user substantially decreases the risk that container -> host privilege escalation could occur. 
-This is an added security benefit ([Docker docs](https://docs.docker.com/engine/security/#linux-kernel-capabilities).
+This is an added security benefit ([Docker docs](https://docs.docker.com/engine/security/#linux-kernel-capabilities)).
 
-For debian-based images, removing root from container could be like this:
+For Debian-based images, removing root from container can be done like this:
 
 ```Dockerfile
 RUN groupadd -g 10001 dotnet && \
@@ -93,7 +94,7 @@ USER dotnet:dotnet
 
 **NOTE**: Sometimes when you remove the root from container, you will need to adjust your application/service permissions.
 
-For example, dotnet application cannot run on port 80 without root priviligies and you have to change the default port (in the example it's 5000).
+For example, dotnet applications cannot run on port 80 without root privileges and you have to change the default port (in the example it's 5000).
 
 ```Dockerfile
 ENV ASPNETCORE_URLS http://*:5000
@@ -116,7 +117,7 @@ Use a specific image `version` using `major.minor`, not `major.minor.patch` so a
 
 ### Why you perhaps shouldn't pin with a SHA
 
-SHA pinning gives you completely reliable and reproducable builds, but it also likely means you won't have any obvious way to pull in important security fixes from the base images you use. If you use `major.minor` tags, you get security fixes by accident when you build new versions of your image - at the cost of builds being less reproducable.
+SHA pinning gives you completely reliable and reproducible builds, but it also likely means you won't have any obvious way to pull in important security fixes from the base images you use. If you use `major.minor` tags, you get security fixes by accident when you build new versions of your image - at the cost of builds being less reproducible.
 
 **Consider using [docker-lock](https://github.com/safe-waters/docker-lock)**: this tool keeps track of exactly which Docker image SHA you are using for builds, while having the actual image you use still be a `major.minor` version. This allows you to reproduce your builds as if you'd used SHA pinning, while getting important security updates when they are released as if you'd used `major.minor` versions.
 
