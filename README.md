@@ -154,6 +154,8 @@ Even if ADD can lower the number of image layers, COPY should be used whenever p
 ## Always combine RUN `apt-get update` with `apt-get install` in the same run statement
 Using `apt-get update` alone in a RUN causes caching issues and subsequent `apt-get install` instructions fail. It’s related to caching mechanism that Docker use. While building the image, Docker sees the initial and modified instructions as identical and reuses the cache from previous steps. As a result, the apt-get update is not executed because the build uses the cached version. Because the `apt-get update` is not run, the build can potentially get an outdated version of packages.
 
+Below is an example of RUN instruction that demonstrates all the apt-get recommendations.
+
 ```sh
 RUN apt-get update && apt-get install -y \
     curl \
