@@ -151,7 +151,7 @@ Arbitrary URLs specified for ADD could result in MITM attacks, or sources of mal
 Even if ADD can lower the number of image layers, COPY should be used whenever possible.
 
 
-## ALWAYS COMBINE RUN APT-GET UPDATE WITH APT-GET INSTALL IN THE SAME RUN STATEMENT
+## Always combine RUN `apt-get update` with `apt-get install` in the same run statement
 Using `apt-get update` alone in a RUN causes caching issues and subsequent `apt-get install` instructions fail. It’s related to caching mechanism that Docker use. While building the image, Docker sees the initial and modified instructions as identical and reuses the cache from previous steps. As a result, the apt-get update is not executed because the build uses the cached version. Because the `apt-get update` is not run, the build can potentially get an outdated version of packages.
 
 ```sh
