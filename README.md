@@ -18,7 +18,7 @@ The following are included in the Dockerfile in this repository:
 - [The `latest` is an evil, choose specific image tag](#the-latest-is-an-evil-choose-specific-image-tag)
 - [Only store arguments in `CMD`](#only-store-arguments-in-cmd)
 - [Always use COPY instead of ADD (there is only one exception)](#always-use-copy-instead-of-add-there-is-only-one-exception)
-- [Always combine RUN apt-get update with apt-get install in the same run statement] (#always-combine-RUN-apt-get-update-with-apt-get-install-in-the-same-run-statement)
+- [Always combine RUN `apt-get update` with `apt-get install` in the same run statement](#always-combine-run-apt-get-update-with-apt-get-install-in-the-same-run-statement)
 
 ## Use official Docker images whenever possible
 
