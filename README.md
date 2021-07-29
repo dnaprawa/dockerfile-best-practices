@@ -146,9 +146,21 @@ If `CMD` includes the binary name, then they must guess what your binary name is
 
 ## Always use COPY instead of ADD (there is only one exception)
 
+The only one exception for using ADD is tar auto-extraction capability
+
+```sh
+ADD local-file.tar.xz /usr/share/files
+```
+
 Arbitrary URLs specified for ADD could result in MITM attacks, or sources of malicious data. In addition, ADD implicitly unpacks local archives which may not be expected and result in path traversal and Zip Slip vulnerabilities. 
 
-Even if ADD can lower the number of image layers, COPY should be used whenever possible.
+**You should avoid** doing like this:
+
+```sh
+ADD https://example-url.com/file.tar.xz /usr/share/files
+```
+
+To summarize, COPY should be used whenever possible.
 
 
 ## Always combine RUN `apt-get update` with `apt-get install` in the same run statement
