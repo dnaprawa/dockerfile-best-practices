@@ -18,6 +18,7 @@ The following are included in the Dockerfile in this repository:
 - [The `latest` is an evil, choose specific image tag](#the-latest-is-an-evil-choose-specific-image-tag)
 - [Only store arguments in `CMD`](#only-store-arguments-in-cmd)
 - [Always use COPY instead of ADD (there is only one exception)](#always-use-copy-instead-of-add-there-is-only-one-exception)
+- [Always combine RUN apt-get update with apt-get install in the same run statement] (#always-combine-RUN-apt-get-update-with-apt-get-install-in-the-same-run-statement)
 
 ## Use official Docker images whenever possible
 
@@ -145,9 +146,20 @@ If `CMD` includes the binary name, then they must guess what your binary name is
 
 ## Always use COPY instead of ADD (there is only one exception)
 
-// TO DO
+Arbitrary URLs specified for ADD could result in MITM attacks, or sources of malicious data. In addition, ADD implicitly unpacks local archives which may not be expected and result in path traversal and Zip Slip vulnerabilities. 
+
+Even if ADD can lower the number of image layers, COPY should be used whenever possible.
 
 
+## ALWAYS COMBINE RUN APT-GET UPDATE WITH APT-GET INSTALL IN THE SAME RUN STATEMENT
+Using `apt-get update` alone in a RUN causes caching issues and subsequent `apt-get install` instructions fail. It’s related to caching mechanism that Docker use. While building the image, Docker sees the initial and modified instructions as identical and reuses the cache from previous steps. As a result, the apt-get update is not executed because the build uses the cached version. Because the `apt-get update` is not run, the build can potentially get an outdated version of packages.
 
+```sh
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    build-essential  \
+    && rm -rf /var/lib/apt/lists/*
+```
 
 
